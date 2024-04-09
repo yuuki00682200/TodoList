@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct AddTodoView: View {
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.colorScheme) private var colorScheme
     
-    @State var AddTodoTitle: String = ""
     @Binding var Showshould_AddTodoView: Bool
     @Binding var TodoList: [TodoModel]
+    
+    @State var AddTodoTitle: String = ""
+    @State var AddTodoDetails: String = ""
     
     var body: some View {
         ZStack{
@@ -27,13 +29,16 @@ struct AddTodoView: View {
                         }.frame(width: 50, height: 50).background(Color.gray).cornerRadius(50)
                     }.padding()
                     Spacer()
-                    Text("予定を追加").font(.title).fontWeight(.bold).padding()
+                    Text("予定を追加").font(.title).fontWeight(.bold).foregroundColor(Color.black).padding()
                 }
                 Spacer()
-                TextField("タップして入力", text: $AddTodoTitle).frame(width: 280, height: 50).background(Color.gray.opacity(0.4)).cornerRadius(10)
+                Text("タイトル").foregroundColor(Color.black)
+                TextField("タップして入力", text: $AddTodoTitle).frame(width: 280, height: 50).background(Color.gray.opacity(0.4)).foregroundColor(colorScheme == .dark ? Color.black : Color.white).cornerRadius(10)
+                Text("詳細").foregroundColor(Color.black).padding()
+                TextField("タップして入力", text: $AddTodoDetails).frame(width: 280, height: 50).background(Color.gray.opacity(0.4)).foregroundColor(colorScheme == .dark ? Color.black : Color.white).cornerRadius(10)
                 Spacer()
                 Button(action: {
-                    TodoList.append(TodoModel(Tag: "", Title: AddTodoTitle, Details: "", Check: false))
+                    TodoList.append(TodoModel(Tag: "", Title: AddTodoTitle, Details: AddTodoDetails, Check: false))
                     Showshould_AddTodoView = false
                 }){
                     VStack{
@@ -44,6 +49,14 @@ struct AddTodoView: View {
                     }
                 }.padding()
             }.frame(width: 300, height: 500).background(Color.white).cornerRadius(20)
+        }
+        //キーボードの閉じるボタン
+        .toolbar{
+            ToolbarItem(placement: .keyboard) {
+                Button("閉じる") {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }
+            }
         }
     }
 }
