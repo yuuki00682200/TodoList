@@ -77,9 +77,19 @@ struct ContentView: View {
                 }
             }
         }.onAppear{
+
+            loadTodos()
             if let todolist = UserDefaults.standard.object(forKey: "TodoList_Key") as? [TodoModel] {
                 TodoList = todolist
             }
+        }
+    }
+    
+
+    func loadTodos() {
+        if let todosData = UserDefaults.standard.data(forKey: "TodoList_Key"),
+           let decodedTodos = try? JSONDecoder().decode([TodoModel].self, from: todosData) {
+            TodoList = decodedTodos
         }
     }
 }
