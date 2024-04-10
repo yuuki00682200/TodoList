@@ -7,10 +7,11 @@
 
 import Foundation
 
-struct TodoModel: Identifiable{
+struct TodoModel: Codable, Identifiable {
     var id = UUID()
     var Tag: String
     var Title: String
     var Details: String
     var Check: Bool
 }
+
