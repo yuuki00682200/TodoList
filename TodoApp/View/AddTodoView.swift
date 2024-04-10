@@ -40,6 +40,7 @@ struct AddTodoView: View {
                 Button(action: {
                     TodoList.append(TodoModel(Tag: "", Title: AddTodoTitle, Details: AddTodoDetails, Check: false))
                     Showshould_AddTodoView = false
+                    saveTodos()
                 }){
                     VStack{
                         VStack{
@@ -57,6 +58,11 @@ struct AddTodoView: View {
                     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                 }
             }
+        }
+    }
+    func saveTodos() {
+        if let encodedData = try? JSONEncoder().encode(TodoList) {
+            UserDefaults.standard.set(encodedData, forKey: "TodoList_Key")
         }
     }
 }
